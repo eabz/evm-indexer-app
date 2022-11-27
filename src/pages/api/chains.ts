@@ -14,7 +14,7 @@ export default async function async(_req: NextApiRequest, res: NextApiResponse<I
 
   for (let i = 0; i < chains.length; i++) {
     const blocks = await getChainBlocks(chains[i].chain, {}, headers)
-    status.push({ chain: chains[i], last_indexed_block: blocks.blocks_aggregate.aggregate.count })
+    status.push({ chain: chains[i].chain, last_indexed_block: blocks.blocks_aggregate.aggregate.count })
   }
 
   res.json(status)
