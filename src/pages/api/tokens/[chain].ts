@@ -15,23 +15,37 @@ const CACHE_TIME = 60 * 60 * 12 // 12 hours.
 export default async function async(req: NextApiRequest, res: NextApiResponse<ApiResponseToken[]>) {
   const redis = Redis.fromEnv()
 
-  let coinGeckoTokens = await redis.get<CoingeckoToken[]>(COINGECKO_TOKENS_KEY)
+  const coinGeckoTokensCached = await redis.get<string>(COINGECKO_TOKENS_KEY)
 
-  if (!coinGeckoTokens) {
+  let coinGeckoTokens: CoingeckoToken[] = []
+
+  if (!coinGeckoTokensCached) {
     coinGeckoTokens = await getCoinGeckoTokens()
 
-    await redis.set(COINGECKO_TOKENS_KEY, coinGeckoTokens, { ex: CACHE_TIME })
+    await redis.set(COINGECKO_TOKENS_KEY, JSON.stringify(coinGeckoTokens), { ex: CACHE_TIME })
+  } else {
+    coinGeckoTokens = JSON.parse(coinGeckoTokensCached)
   }
 
-  let cmcTokens = await redis.get<CmcToken[]>(CMC_TOKENS_KEY)
+  const cmcTokensCached = await redis.get<string>(CMC_TOKENS_KEY)
 
-  if (!cmcTokens) {
+  let cmcTokens: CmcToken[] = []
+
+  if (!cmcTokensCached) {
     cmcTokens = await getCoinMarketCapTokens()
 
-    await redis.set(CMC_TOKENS_KEY, cmcTokens, { ex: CACHE_TIME })
+    await redis.set(CMC_TOKENS_KEY, JSON.stringify(cmcTokens), { ex: CACHE_TIME })
+  } else {
+    cmcTokens = JSON.parse(cmcTokensCached)
   }
 
-  const tokens: { tokens: IndexerToken[] } = await getChainTokens(req.query.chain as string, {}, HASURA_HEADERS)
+  let chain = req.query.chain as string
+
+  if (chain === 'ethereum') {
+    chain = 'mainnet'
+  }
+
+  const tokens: { tokens: IndexerToken[] } = await getChainTokens(chain, {}, HASURA_HEADERS)
 
   const tokensMerged = tokens.tokens.map((token: IndexerToken) => {
     const coinGeckoTokenId = coinGeckoTokens?.find(
