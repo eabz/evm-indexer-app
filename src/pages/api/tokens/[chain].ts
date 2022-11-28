@@ -1,5 +1,4 @@
 import { Redis } from '@upstash/redis'
-import { compress, decompress } from 'compress-json'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { getChainTokens } from '@/graph/fetcher'
@@ -16,30 +15,22 @@ const CACHE_TIME = 60 * 60 * 12 // 12 hours.
 export default async function async(req: NextApiRequest, res: NextApiResponse<ApiResponseToken[]>) {
   const redis = Redis.fromEnv()
 
-  const coinGeckoTokensCached = await redis.get<string>(COINGECKO_TOKENS_KEY)
+  let coinGeckoTokens = await redis.get<CoingeckoToken[]>(COINGECKO_TOKENS_KEY)
 
-  let coinGeckoTokens: CoingeckoToken[] = []
-
-  if (!coinGeckoTokensCached) {
+  if (!coinGeckoTokens) {
     coinGeckoTokens = await getCoinGeckoTokens()
 
-    const compressed = compress(coinGeckoTokens)
-    await redis.set(COINGECKO_TOKENS_KEY, JSON.stringify(compressed), { ex: CACHE_TIME })
-  } else {
-    coinGeckoTokens = decompress(JSON.parse(coinGeckoTokensCached))
+    const cleaned = coinGeckoTokens.map((token) => ({ symbol: token.symbol, id: token.id }))
+    await redis.set(COINGECKO_TOKENS_KEY, cleaned, { ex: CACHE_TIME })
   }
 
-  const cmcTokensCached = await redis.get<string>(CMC_TOKENS_KEY)
+  let cmcTokens = await redis.get<CmcToken[]>(CMC_TOKENS_KEY)
 
-  let cmcTokens: CmcToken[] = []
-
-  if (!cmcTokensCached) {
+  if (!cmcTokens) {
     cmcTokens = await getCoinMarketCapTokens()
 
-    const compressed = compress(cmcTokens)
-    await redis.set(CMC_TOKENS_KEY, JSON.stringify(compressed), { ex: CACHE_TIME })
-  } else {
-    cmcTokens = decompress(JSON.parse(cmcTokensCached))
+    const cleaned = cmcTokens.map((token) => ({ symbol: token.symbol, slug: token.slug }))
+    await redis.set(CMC_TOKENS_KEY, cleaned, { ex: CACHE_TIME })
   }
 
   let chain = req.query.chain as string
