@@ -17,3 +17,15 @@ export const getChainsQuery = (): string => gql`
     }
   }
 `
+
+export const getChainTokensQuery = (chain: string): string => gql`
+  query getChainTokens {
+    tokens(where: { chain: { _eq: ${chain} } }) {
+      address
+      chain
+      decimals
+      name
+      symbol
+    }
+  }
+`
