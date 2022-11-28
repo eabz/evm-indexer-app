@@ -28,3 +28,13 @@ export const getChainTokensQuery = (chain: string, limit = '500', offset = '0'):
     }
   }
 `
+
+export const getTokensCountForChainQuery = (chain: string): string => gql`
+  query getTokensCountForChain {
+    tokens_aggregate(where: { chain: { _eq: ${chain}} }) {
+      aggregate {
+        count
+      }
+    }
+  }
+`

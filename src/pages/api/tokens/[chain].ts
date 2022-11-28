@@ -46,9 +46,9 @@ export default async function async(req: NextApiRequest, res: NextApiResponse<Ap
 
   const offset = page && page !== '0' ? ((parseInt(page) - 1) * limitNumber).toFixed(0) : undefined
 
-  const tokens: { tokens: IndexerToken[] } = await getChainTokens(chain, limit, offset, {}, HASURA_HEADERS)
+  const { tokens }: { tokens: IndexerToken[] } = await getChainTokens(chain, limit, offset, {}, HASURA_HEADERS)
 
-  const tokensMerged = tokens.tokens.map((token: IndexerToken) => {
+  const tokensMerged = tokens.map((token: IndexerToken) => {
     const coinGeckoTokenId = coinGeckoTokens?.find(
       (coinGeckoToken) => coinGeckoToken.symbol === token.symbol.toLowerCase(),
     )

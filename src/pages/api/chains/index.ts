@@ -4,9 +4,9 @@ import { getChainBlocks } from '@/graph/fetcher'
 import { HASURA_HEADERS } from '@/graph/utils'
 
 const handler = async (_req: NextApiRequest, res: NextApiResponse) => {
-  const state = await getChainBlocks({}, HASURA_HEADERS)
+  const { state } = await getChainBlocks({}, HASURA_HEADERS)
 
-  res.json(state.state)
+  res.json(state)
 }
 
 export default handler
