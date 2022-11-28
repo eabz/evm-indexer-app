@@ -1,5 +1,7 @@
 import request from 'graphql-request'
 
+import { IndexerChainInfo } from '@/types'
+
 import { getChainBlocksQuery, getChainsQuery, getChainTokensQuery, getTokensCountForChainQuery } from './queries'
 
 export const indexer_graph = async (query: string, variables = {}, headers = {}) =>
@@ -9,7 +11,7 @@ export const getChains = async (variables = {}, headers = {}) => {
   return await indexer_graph(getChainsQuery(), variables, headers)
 }
 
-export const getChainBlocks = async (variables = {}, headers = {}) => {
+export const getChainBlocks = async (variables = {}, headers = {}): Promise<{ state: IndexerChainInfo[] }> => {
   return await indexer_graph(getChainBlocksQuery(), variables, headers)
 }
 

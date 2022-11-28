@@ -3,6 +3,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AppProps } from 'next/app'
 import { DefaultSeo } from 'next-seo'
 
+import { theme } from '@/theme'
+
 const queryClient = new QueryClient()
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -13,7 +15,7 @@ export default function App({ Component, pageProps }: AppProps) {
         description={'EVM Chains Indexer'}
         title={'EVM Chains Indexer'}
       />
-      <ChakraProvider resetCSS>
+      <ChakraProvider theme={theme} resetCSS>
         <QueryClientProvider client={queryClient}>
           <Component {...pageProps} />
         </QueryClientProvider>

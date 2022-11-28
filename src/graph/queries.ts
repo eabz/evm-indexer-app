@@ -2,7 +2,7 @@ import { gql } from 'graphql-request'
 
 export const getChainBlocksQuery = (): string => gql`
   query getChainBlocks {
-    state {
+    state(order_by: { chain: asc }) {
       blocks
       chain
     }
@@ -11,7 +11,7 @@ export const getChainBlocksQuery = (): string => gql`
 
 export const getChainsQuery = (): string => gql`
   query getChains {
-    state {
+    state(order_by: { chain: asc }) {
       chain
     }
   }
