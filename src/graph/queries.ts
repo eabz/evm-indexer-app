@@ -17,9 +17,9 @@ export const getChainsQuery = (): string => gql`
   }
 `
 
-export const getChainTokensQuery = (chain: string): string => gql`
+export const getChainTokensQuery = (chain: string, limit = '500', offset = '0'): string => gql`
   query getChainTokens {
-    tokens(where: { chain: { _eq: ${chain} } }) {
+    tokens(where: { chain: { _eq: ${chain} } }, limit: ${limit}, offset: ${offset}, order_by: {name: asc}) {
       address
       chain
       decimals

@@ -39,7 +39,14 @@ export default async function async(req: NextApiRequest, res: NextApiResponse<Ap
     chain = 'mainnet'
   }
 
-  const tokens: { tokens: IndexerToken[] } = await getChainTokens(chain, {}, HASURA_HEADERS)
+  const limit = req.query.limit as string
+  const page = req.query.page as string
+
+  const limitNumber = limit ? parseInt(limit) : 500
+
+  const offset = page && page !== '0' ? ((parseInt(page) - 1) * limitNumber).toFixed(0) : undefined
+
+  const tokens: { tokens: IndexerToken[] } = await getChainTokens(chain, limit, offset, {}, HASURA_HEADERS)
 
   const tokensMerged = tokens.tokens.map((token: IndexerToken) => {
     const coinGeckoTokenId = coinGeckoTokens?.find(

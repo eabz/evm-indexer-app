@@ -13,6 +13,6 @@ export const getChainBlocks = async (variables = {}, headers = {}) => {
   return await indexer_graph(getChainBlocksQuery(), variables, headers)
 }
 
-export const getChainTokens = async (chain: string, variables = {}, headers = {}) => {
-  return await indexer_graph(getChainTokensQuery(chain), variables, headers)
+export const getChainTokens = async (chain: string, limit?: string, offset?: string, variables = {}, headers = {}) => {
+  return await indexer_graph(getChainTokensQuery(chain, limit, offset), variables, headers)
 }
