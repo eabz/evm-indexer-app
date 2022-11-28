@@ -3,6 +3,7 @@ export interface IChainInfo {
   chainId: number
   name: string
   logoUrl: string
+  rpcUrl: string
 }
 
 export const chains: IChainInfo[] = [
@@ -11,6 +12,7 @@ export const chains: IChainInfo[] = [
     chainId: 1,
     name: 'Ethereum',
     logoUrl: 'ethereum-logo.svg',
+    rpcUrl: 'https://rpc.ankr.com/eth',
   },
 
   {
@@ -18,18 +20,21 @@ export const chains: IChainInfo[] = [
     chainId: 250,
     name: 'Fantom',
     logoUrl: 'fantom-logo.svg',
+    rpcUrl: 'https://rpc.ankr.com/fantom',
   },
   {
     id: 'polygon',
     chainId: 137,
     name: 'Polygon',
     logoUrl: 'polygon-logo.svg',
+    rpcUrl: 'https://polygon-rpc.com/',
   },
   {
     id: 'optimism',
     chainId: 10,
     name: 'Optimism',
     logoUrl: 'optimism-logo.svg',
+    rpcUrl: 'https://mainnet.optimism.io/',
   },
 ]
 

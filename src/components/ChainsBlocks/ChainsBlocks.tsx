@@ -32,20 +32,27 @@ const ChainPanel = ({
         <Box>
           <NextImage height="40px" src={`/static/chains/${chain.logoUrl}`} width="40px" />
         </Box>
+        <HStack>
+          <Box width="120px">
+            <Text fontSize="xs" textAlign="center">
+              Last Chain Block
+            </Text>
+            <Text fontSize="xs" fontWeight="bold" textAlign="center">
+              {last_block}
+            </Text>
+          </Box>
+          <Box width="120px">
+            <Text fontSize="xs" textAlign="center">
+              Indexed Blocks
+            </Text>
+            <Text fontSize="xs" fontWeight="bold" textAlign="center">
+              {indexed_block}
+            </Text>
+          </Box>
+        </HStack>
         <Box>
-          <Text fontSize="sm" textAlign="center">
-            Last Block
-          </Text>
-          <Text fontSize="sm" textAlign="center">
-            {last_block}
-          </Text>
-        </Box>
-        <Box>
-          <Text fontSize="sm" textAlign="center">
-            Indexed Blocks
-          </Text>
-          <Text fontSize="sm" textAlign="center">
-            {indexed_block}
+          <Text fontSize="sm" fontWeight="bold" textAlign="center">
+            {(indexed_block / last_block).toFixed(2)}%
           </Text>
         </Box>
       </VStack>
@@ -77,7 +84,7 @@ export const ChainsBlocks = () => {
         </HStack>
       ) : (
         <Flex flexDirection="row" justifyContent="center" width="full">
-          <SimpleGrid columns={{ base: 1, md: 2 }} maxWidth="500px" spacingX="5" width="full">
+          <SimpleGrid columns={{ base: 1, md: 2 }} maxWidth="600px" spacingX="5" width="full">
             {chainsInfo &&
               chainsInfo.map((chainInfo) => (
                 <HStack key={`ChainInfo_${chainInfo.chain}`} justifyContent="center">
