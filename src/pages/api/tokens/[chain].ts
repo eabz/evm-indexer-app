@@ -1,3 +1,4 @@
+import { Redis } from '@upstash/redis'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { getChainTokens } from '@/graph/fetcher'
@@ -6,18 +7,37 @@ import { CmcToken, CoingeckoToken, IndexerToken } from '@/types/token'
 
 type ApiResponseToken = IndexerToken & { coingecko_id?: string; cmc_id?: string }
 
-export default async function async(req: NextApiRequest, res: NextApiResponse<ApiResponseToken[]>) {
-  const coinGeckoTokens = await getCoinGeckoTokens()
+const COINGECKO_TOKENS_KEY = 'coingecko_tokens'
+const CMC_TOKENS_KEY = 'cmc_tokens'
 
-  const cmcTokens = await getCoinMarketCapTokens()
+const CACHE_TIME = 60 * 60 * 12 // 12 hours.
+
+export default async function async(req: NextApiRequest, res: NextApiResponse<ApiResponseToken[]>) {
+  const redis = Redis.fromEnv()
+
+  let coinGeckoTokens = await redis.get<CoingeckoToken[]>(COINGECKO_TOKENS_KEY)
+
+  if (!coinGeckoTokens) {
+    coinGeckoTokens = await getCoinGeckoTokens()
+
+    await redis.set(COINGECKO_TOKENS_KEY, coinGeckoTokens, { ex: CACHE_TIME })
+  }
+
+  let cmcTokens = await redis.get<CmcToken[]>(CMC_TOKENS_KEY)
+
+  if (!cmcTokens) {
+    cmcTokens = await getCoinMarketCapTokens()
+
+    await redis.set(CMC_TOKENS_KEY, cmcTokens, { ex: CACHE_TIME })
+  }
 
   const tokens: { tokens: IndexerToken[] } = await getChainTokens(req.query.chain as string, {}, HASURA_HEADERS)
 
   const tokensMerged = tokens.tokens.map((token: IndexerToken) => {
-    const coinGeckoTokenId = coinGeckoTokens.find(
+    const coinGeckoTokenId = coinGeckoTokens?.find(
       (coinGeckoToken) => coinGeckoToken.symbol === token.symbol.toLowerCase(),
     )
-    const cmcTokenId = cmcTokens.find((cmcToken) => cmcToken.symbol === token.symbol)
+    const cmcTokenId = cmcTokens?.find((cmcToken) => cmcToken.symbol === token.symbol)
 
     return { ...token, coingecko_id: coinGeckoTokenId?.id, cmc_id: cmcTokenId?.slug }
   })
