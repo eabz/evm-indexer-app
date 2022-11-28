@@ -1,4 +1,5 @@
 import { Redis } from '@upstash/redis'
+import { compress, decompress } from 'compress-json'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { getChainTokens } from '@/graph/fetcher'
@@ -22,9 +23,10 @@ export default async function async(req: NextApiRequest, res: NextApiResponse<Ap
   if (!coinGeckoTokensCached) {
     coinGeckoTokens = await getCoinGeckoTokens()
 
-    await redis.set(COINGECKO_TOKENS_KEY, JSON.stringify(coinGeckoTokens), { ex: CACHE_TIME })
+    const compressed = compress(coinGeckoTokens)
+    await redis.set(COINGECKO_TOKENS_KEY, JSON.stringify(compressed), { ex: CACHE_TIME })
   } else {
-    coinGeckoTokens = JSON.parse(coinGeckoTokensCached)
+    coinGeckoTokens = decompress(JSON.parse(coinGeckoTokensCached))
   }
 
   const cmcTokensCached = await redis.get<string>(CMC_TOKENS_KEY)
@@ -34,9 +36,10 @@ export default async function async(req: NextApiRequest, res: NextApiResponse<Ap
   if (!cmcTokensCached) {
     cmcTokens = await getCoinMarketCapTokens()
 
-    await redis.set(CMC_TOKENS_KEY, JSON.stringify(cmcTokens), { ex: CACHE_TIME })
+    const compressed = compress(cmcTokens)
+    await redis.set(CMC_TOKENS_KEY, JSON.stringify(compressed), { ex: CACHE_TIME })
   } else {
-    cmcTokens = JSON.parse(cmcTokensCached)
+    cmcTokens = decompress(JSON.parse(cmcTokensCached))
   }
 
   let chain = req.query.chain as string

@@ -17,6 +17,7 @@
     "@emotion/styled": "^11.10.5",
     "@tanstack/react-query": "^4.16.1",
     "@upstash/redis": "^1.18.1",
+    "compress-json": "^2.1.2",
     "ethers": "^5.7.2",
     "framer-motion": "^7.6.12",
     "graphql": "^16.6.0",
