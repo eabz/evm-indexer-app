@@ -51,6 +51,9 @@ const ChainPanel = ({
           </Box>
         </HStack>
         <Box>
+          <Text fontSize="sm" textAlign="center">
+            Synced
+          </Text>
           <Text fontSize="sm" fontWeight="bold" textAlign="center">
             {(indexed_block / last_block).toFixed(2)}%
           </Text>
