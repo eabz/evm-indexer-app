@@ -55,7 +55,7 @@ const ChainPanel = ({
             Synced
           </Text>
           <Text fontSize="sm" fontWeight="bold" textAlign="center">
-            {(indexed_block / last_block).toFixed(2)}%
+            {((indexed_block / last_block) * 100).toFixed(2)}%
           </Text>
         </Box>
       </VStack>
