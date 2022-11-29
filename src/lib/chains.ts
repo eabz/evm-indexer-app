@@ -36,6 +36,34 @@ export const chains: IChainInfo[] = [
     logoUrl: 'optimism-logo.svg',
     rpcUrl: 'https://mainnet.optimism.io/',
   },
+  {
+    id: 'gnosis',
+    chainId: 100,
+    name: 'Gnosis',
+    logoUrl: 'gnosis-chain-logo.svg',
+    rpcUrl: 'https://rpc.ankr.com/gnosis',
+  },
+  {
+    id: 'bsc',
+    chainId: 56,
+    name: 'BNB Chain',
+    logoUrl: 'bnbchain-logo.svg',
+    rpcUrl: 'https://bsc-dataseed.binance.org/',
+  },
+  {
+    id: 'avalanche',
+    chainId: 43114,
+    name: 'Avalanche',
+    logoUrl: 'avalanche-logo.svg',
+    rpcUrl: 'https://rpc.ankr.com/avalanche',
+  },
+  {
+    id: 'arbitrum',
+    chainId: 42161,
+    name: 'Avalanche',
+    logoUrl: 'arbitrum-logo.svg',
+    rpcUrl: 'https://arb1.arbitrum.io/rpc',
+  },
 ]
 
 export const chainById: { [key: string]: IChainInfo } = {}
