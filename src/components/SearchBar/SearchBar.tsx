@@ -1,7 +1,7 @@
 import { FormControl, FormErrorMessage } from '@chakra-ui/form-control'
 import { Input } from '@chakra-ui/input'
 import { Box, Center, VStack } from '@chakra-ui/layout'
-import { isAddress, isHexString, toUtf8Bytes } from 'ethers/lib/utils'
+import { isHexString, toUtf8Bytes } from 'ethers/lib/utils'
 import { useRouter } from 'next/router'
 import { ChangeEvent, useState } from 'react'
 
@@ -24,6 +24,7 @@ export const SearchBar = () => {
 
     const isValidString = isHexString(input)
     if (isValidString) {
+      /*    
       const isValidAddress = isAddress(input as string)
 
       if (isValidAddress) {
@@ -33,7 +34,7 @@ export const SearchBar = () => {
 
         push(`/address/${input}`)
         return
-      }
+      } */
 
       const bytes = toUtf8Bytes(input as string)
 

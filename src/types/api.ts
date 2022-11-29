@@ -1,4 +1,4 @@
-import { IndexerToken } from './indexer'
+import { IndexerBlock, IndexerToken, IndexerTxLog, IndexerTxReceipt } from './indexer'
 
 export interface ApiChainInfo {
   chain: string
@@ -17,10 +17,6 @@ export interface ApiAddressInfo {
   txs: number
 }
 
-export interface ApiBlockInfo {
-  chain: string
-}
+export type ApiBlockInfo = IndexerBlock & { txs_hash?: string[] }
 
-export interface ApiTxInfo {
-  chain: string
-}
+export type ApiTxInfo = IndexerTxReceipt & { log?: IndexerTxLog }

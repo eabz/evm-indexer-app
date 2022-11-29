@@ -1,10 +1,11 @@
 import { GetServerSidePropsContext } from 'next'
 
 import { PageLayout } from '@/components/PageLayout'
+import { ApiTxInfo } from '@/types'
 
 import { getApiTransaction } from '../api/tx/[hash]'
 
-export default function TxPage() {
+export default function TxPage({ txInfo }: { txInfo: ApiTxInfo[] }) {
   return (
     <PageLayout>
       <div />
@@ -23,9 +24,9 @@ export async function getServerSideProps({ params }: GetServerSidePropsContext) 
     }
   }
 
-  const data = await getApiTransaction(hash as string)
+  const txInfo = await getApiTransaction(hash as string)
 
   return {
-    props: {},
+    props: { txInfo },
   }
 }

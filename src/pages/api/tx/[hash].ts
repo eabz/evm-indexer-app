@@ -1,5 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
+import { getTransaction, getTransactionLogs } from '@/graph/fetcher'
+import { HASURA_HEADERS } from '@/graph/utils'
+import { ApiTxInfo } from '@/types'
+
 export default async function async(req: NextApiRequest, res: NextApiResponse) {
   const hash = req.query.hash as string
 
@@ -8,6 +12,11 @@ export default async function async(req: NextApiRequest, res: NextApiResponse) {
   res.json(data)
 }
 
-export const getApiTransaction = async (hash: string) => {
-  return
+export const getApiTransaction = async (hash: string): Promise<ApiTxInfo[]> => {
+  const [{ txs_receipts }, { logs }] = await Promise.all([
+    getTransaction(hash, {}, HASURA_HEADERS),
+    getTransactionLogs(hash, {}, HASURA_HEADERS),
+  ])
+
+  return txs_receipts.map((tx, i) => ({ ...tx, log: logs[i] }))
 }

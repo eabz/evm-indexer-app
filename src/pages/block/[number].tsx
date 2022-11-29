@@ -1,10 +1,11 @@
 import { GetServerSidePropsContext } from 'next'
 
 import { PageLayout } from '@/components/PageLayout'
+import { ApiBlockInfo } from '@/types'
 
 import { getApiBlock } from '../api/block/[number]'
 
-export default function BlockPage() {
+export default function BlockPage({ blocks }: { blocks: ApiBlockInfo[] }) {
   return (
     <PageLayout>
       <div />
@@ -23,9 +24,9 @@ export async function getServerSideProps({ params }: GetServerSidePropsContext) 
     }
   }
 
-  const data = await getApiBlock(parseInt(number as string))
+  const blocks = await getApiBlock(parseInt(number as string))
 
   return {
-    props: {},
+    props: { blocks },
   }
 }
