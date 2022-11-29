@@ -1,6 +1,8 @@
+import { VStack } from '@chakra-ui/layout'
 import { GetServerSidePropsContext } from 'next'
 
 import { PageLayout } from '@/components/PageLayout'
+import { Tx } from '@/components/Tx'
 import { ApiTxInfo } from '@/types'
 
 import { getApiTransaction } from '../api/tx/[hash]'
@@ -8,7 +10,11 @@ import { getApiTransaction } from '../api/tx/[hash]'
 export default function TxPage({ txInfo }: { txInfo: ApiTxInfo[] }) {
   return (
     <PageLayout>
-      <div />
+      <VStack>
+        {txInfo.map((tx) => (
+          <Tx key={`Tx_${tx.hash}-${tx.chain}`} txInfo={tx} />
+        ))}
+      </VStack>
     </PageLayout>
   )
 }

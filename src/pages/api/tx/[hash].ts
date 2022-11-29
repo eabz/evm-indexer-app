@@ -18,5 +18,12 @@ export const getApiTransaction = async (hash: string): Promise<ApiTxInfo[]> => {
     getTransactionLogs(hash, {}, HASURA_HEADERS),
   ])
 
-  return txs_receipts.map((tx, i) => ({ ...tx, log: logs[i] }))
+  return txs_receipts.map((tx, i) => {
+    const txInfo: ApiTxInfo = { ...tx }
+    const txLogs = logs[i]
+    if (txLogs) {
+      txInfo.log = txLogs
+    }
+    return txInfo
+  })
 }

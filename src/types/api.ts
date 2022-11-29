@@ -19,4 +19,4 @@ export interface ApiAddressInfo {
 
 export type ApiBlockInfo = IndexerBlock & { txs_hash?: string[] }
 
-export type ApiTxInfo = IndexerTxReceipt & { log?: IndexerTxLog }
+export type ApiTxInfo = IndexerTxReceipt & { log?: IndexerTxLog | null }
