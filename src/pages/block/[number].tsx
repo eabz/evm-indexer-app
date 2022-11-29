@@ -2,9 +2,9 @@ import { GetServerSidePropsContext } from 'next'
 
 import { PageLayout } from '@/components/PageLayout'
 
-import { getApiTransaction } from '../api/tx/[hash]'
+import { getApiBlock } from '../api/block/[number]'
 
-export default function TxPage() {
+export default function BlockPage() {
   return (
     <PageLayout>
       <div />
@@ -13,8 +13,8 @@ export default function TxPage() {
 }
 
 export async function getServerSideProps({ params }: GetServerSidePropsContext) {
-  const hash = params?.hash
-  if (!hash) {
+  const number = params?.number
+  if (!number) {
     return {
       redirect: {
         permanent: true,
@@ -23,7 +23,7 @@ export async function getServerSideProps({ params }: GetServerSidePropsContext) 
     }
   }
 
-  const data = await getApiTransaction(hash as string)
+  const data = await getApiBlock(parseInt(number as string))
 
   return {
     props: {},

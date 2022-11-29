@@ -3,16 +3,15 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 import { getChainTokens } from '@/graph/fetcher'
 import { HASURA_HEADERS } from '@/graph/utils'
-import { CmcToken, CoingeckoToken, IndexerToken } from '@/types/token'
-
-type ApiResponseToken = IndexerToken & { coingecko_id?: string; cmc_id?: string }
+import { ApiToken, IndexerToken } from '@/types'
+import { CmcToken, CoingeckoToken } from '@/types/token'
 
 const COINGECKO_TOKENS_KEY = 'coingecko_tokens'
 const CMC_TOKENS_KEY = 'cmc_tokens'
 
 const CACHE_TIME = 60 * 60 * 12 // 12 hours.
 
-export default async function async(req: NextApiRequest, res: NextApiResponse<ApiResponseToken[]>) {
+export default async function async(req: NextApiRequest, res: NextApiResponse<ApiToken[]>) {
   const redis = Redis.fromEnv()
 
   let coinGeckoTokens = await redis.get<CoingeckoToken[]>(COINGECKO_TOKENS_KEY)
