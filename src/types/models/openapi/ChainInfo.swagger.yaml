@@ -1,0 +1,30 @@
+openapi: 3.0.0
+info:
+  title: Converted from ChainInfo.swagger.yaml with typeconv
+  version: '1'
+  x-id: ChainInfo.swagger.yaml
+  x-comment: >-
+    Generated from src/types/models/ChainInfo.ts by core-types-json-schema
+    (https://github.com/grantila/core-types-json-schema) on behalf of typeconv
+    (https://github.com/grantila/typeconv)
+paths: {}
+components:
+  schemas:
+    ChainInfo:
+      properties:
+        chain:
+          title: ChainInfo.chain
+          type: string
+        indexed_block:
+          title: ChainInfo.indexed_block
+          type: number
+        last_block:
+          title: ChainInfo.last_block
+          type: number
+      required:
+        - chain
+        - indexed_block
+        - last_block
+      additionalProperties: false
+      title: ChainInfo
+      type: object

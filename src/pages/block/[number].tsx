@@ -3,11 +3,11 @@ import { GetServerSidePropsContext } from 'next'
 
 import { Block } from '@/components/Block'
 import { PageLayout } from '@/components/PageLayout'
-import { ApiBlockInfo } from '@/types'
+import { Block as BlockInfo } from '@/types/models/Block'
 
 import { getApiBlock } from '../api/block/[number]'
 
-export default function BlockPage({ blocks }: { blocks: ApiBlockInfo[] }) {
+export default function BlockPage({ blocks }: { blocks: BlockInfo[] }) {
   return (
     <PageLayout>
       <VStack>

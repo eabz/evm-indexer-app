@@ -1,7 +1,8 @@
 import { FormControl, FormErrorMessage } from '@chakra-ui/form-control'
 import { Input } from '@chakra-ui/input'
-import { Box, Center, VStack } from '@chakra-ui/layout'
+import { Box, Center, Text, VStack } from '@chakra-ui/layout'
 import { isHexString, toUtf8Bytes } from 'ethers/lib/utils'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { ChangeEvent, useState } from 'react'
 
@@ -73,7 +74,8 @@ export const SearchBar = () => {
               fontSize="sm"
               placeholder="Search by Address / Block / Transaction / Contract"
               textAlign="center"
-              width={{ base: 'full', md: '400px', lg: '600px' }}
+              width={{ base: '300px', md: '400px', lg: '600px' }}
+              disabled
               onChange={handleInputChange}
               onKeyPress={(e) => {
                 if (e.key === 'Enter') {
@@ -83,6 +85,13 @@ export const SearchBar = () => {
             />
           </Box>
           <Box>{isError && <FormErrorMessage>{errorMessage}</FormErrorMessage>}</Box>
+          <Box>
+            <Link href={'/api-doc'}>
+              <Text color="blue.700" cursor="pointer" textDecoration="underline">
+                API documentation
+              </Text>
+            </Link>
+          </Box>
         </VStack>
       </Center>
     </FormControl>

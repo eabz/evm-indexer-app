@@ -1,8 +1,8 @@
 import { Box, Stack } from '@chakra-ui/layout'
 
-import { ApiTxInfo } from '@/types'
+import { Tx as TxInfo } from '@/types/models/Tx'
 
-export const Tx = ({ txInfo }: { txInfo: ApiTxInfo }) => {
+export const Tx = ({ txInfo }: { txInfo: TxInfo }) => {
   return (
     <Stack align="center" justifyContent="center" marginTop="2" width="full">
       <Box>Transaction: {txInfo.hash}</Box>

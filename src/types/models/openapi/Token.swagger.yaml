@@ -1,0 +1,44 @@
+openapi: 3.0.0
+info:
+  title: Converted from Token.swagger.yaml with typeconv
+  version: '1'
+  x-id: Token.swagger.yaml
+  x-comment: >-
+    Generated from src/types/models/Token.ts by core-types-json-schema
+    (https://github.com/grantila/core-types-json-schema) on behalf of typeconv
+    (https://github.com/grantila/typeconv)
+paths: {}
+components:
+  schemas:
+    Token:
+      properties:
+        address:
+          title: Token.address
+          type: string
+        chain:
+          title: Token.chain
+          type: string
+        decimals:
+          title: Token.decimals
+          type: number
+        name:
+          title: Token.name
+          type: string
+        symbol:
+          title: Token.symbol
+          type: string
+        coingecko_id:
+          title: Token.coingecko_id
+          type: string
+        cmc_id:
+          title: Token.cmc_id
+          type: string
+      required:
+        - address
+        - chain
+        - decimals
+        - name
+        - symbol
+      additionalProperties: false
+      title: Token
+      type: object

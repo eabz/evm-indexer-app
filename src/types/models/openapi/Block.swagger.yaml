@@ -1,0 +1,76 @@
+openapi: 3.0.0
+info:
+  title: Converted from Block.swagger.yaml with typeconv
+  version: '1'
+  x-id: Block.swagger.yaml
+  x-comment: >-
+    Generated from src/types/models/Block.ts by core-types-json-schema
+    (https://github.com/grantila/core-types-json-schema) on behalf of typeconv
+    (https://github.com/grantila/typeconv)
+paths: {}
+components:
+  schemas:
+    Block:
+      properties:
+        base_fee_per_gas:
+          title: Block.base_fee_per_gas
+          type: string
+        chain:
+          title: Block.chain
+          type: string
+        difficulty:
+          title: Block.difficulty
+          type: string
+        gas_limit:
+          title: Block.gas_limit
+          type: string
+        gas_used:
+          title: Block.gas_used
+          type: string
+        hash:
+          title: Block.hash
+          type: string
+        miner:
+          title: Block.miner
+          type: string
+        nonce:
+          title: Block.nonce
+          type: string
+        number:
+          title: Block.number
+          type: number
+        size:
+          title: Block.size
+          type: string
+        timestamp:
+          title: Block.timestamp
+          type: string
+        total_difficulty:
+          title: Block.total_difficulty
+          type: string
+        txs:
+          title: Block.txs
+          type: number
+        txs_hash:
+          items:
+            title: Block.txs_hash.[]
+            type: string
+          title: Block.txs_hash
+          type: array
+      required:
+        - base_fee_per_gas
+        - chain
+        - difficulty
+        - gas_limit
+        - gas_used
+        - hash
+        - miner
+        - nonce
+        - number
+        - size
+        - timestamp
+        - total_difficulty
+        - txs
+      additionalProperties: false
+      title: Block
+      type: object

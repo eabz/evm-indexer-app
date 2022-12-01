@@ -1,10 +1,11 @@
-import { Box, Flex, HStack, SimpleGrid, Stack, Text, VStack } from '@chakra-ui/layout'
+import { Box, Center, Flex, HStack, SimpleGrid, Stack, Text, VStack } from '@chakra-ui/layout'
+import { CircularProgress } from '@chakra-ui/progress'
 import { Spinner } from '@chakra-ui/spinner'
 import NextImage from 'next/image'
 import { useCallback, useEffect, useState } from 'react'
 
 import { chainById, IChainInfo } from '@/lib/chains'
-import { ApiChainInfo } from '@/types'
+import { ChainInfo } from '@/types/models/ChainInfo'
 
 const ChainPanel = ({
   chain,
@@ -15,11 +16,12 @@ const ChainPanel = ({
   indexed_block: number
   last_block: number
 }) => {
+  const progress = (indexed_block / last_block) * 100
   return (
     <Box
       border="1px solid"
       borderColor="inherit"
-      borderRadius="md"
+      borderRadius="xl"
       margin="5"
       maxWidth="300px"
       padding="5"
@@ -30,7 +32,7 @@ const ChainPanel = ({
           {chain.name}
         </Text>
         <Box>
-          <NextImage height="40px" src={`/static/chains/${chain.logoUrl}`} width="40px" />
+          <NextImage alt={`${chain.name} Logo`} height="60" src={`/static/chains/${chain.logoUrl}`} width="60" />
         </Box>
         <HStack>
           <Box width="120px">
@@ -50,13 +52,16 @@ const ChainPanel = ({
             </Text>
           </Box>
         </HStack>
-        <Box>
-          <Text fontSize="sm" textAlign="center">
-            Synced
-          </Text>
-          <Text fontSize="sm" fontWeight="bold" textAlign="center">
-            {((indexed_block / last_block) * 100).toFixed(2)}%
-          </Text>
+        <Box py="2">
+          <CircularProgress size="90px" value={progress}>
+            <Center>
+              <Box position="absolute" top={'34px'}>
+                <Text fontSize="sm" fontWeight="bold" textAlign="center">
+                  {progress.toFixed(2)}%
+                </Text>
+              </Box>
+            </Center>
+          </CircularProgress>
         </Box>
       </VStack>
     </Box>
@@ -66,7 +71,7 @@ const ChainPanel = ({
 export const ChainsBlocks = () => {
   const [isLoading, setLoading] = useState(true)
 
-  const [chainsInfo, setChainsInfo] = useState<ApiChainInfo[] | undefined>(undefined)
+  const [chainsInfo, setChainsInfo] = useState<ChainInfo[] | undefined>(undefined)
 
   const fetchData = useCallback(async () => {
     const data = await fetch('/api/chains')

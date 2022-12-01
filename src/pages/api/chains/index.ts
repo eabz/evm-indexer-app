@@ -4,12 +4,29 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { getChainBlocks } from '@/graph/fetcher'
 import { HASURA_HEADERS } from '@/graph/utils'
 import { chainById } from '@/lib/chains'
-import { ApiChainInfo } from '@/types'
+import { ChainInfo } from '@/types/models/ChainInfo'
 
-const handler = async (_req: NextApiRequest, res: NextApiResponse<ApiChainInfo[]>) => {
+/**
+ * @swagger
+ * /api/chains:
+ *   get:
+ *     tags: [Chain Information]
+ *     responses:
+ *       200:
+ *         description: An array with all the chains being indexed and their sync status
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 $ref: '#/components/schemas/ChainInfo'
+ */
+
+const handler = async (_req: NextApiRequest, res: NextApiResponse<ChainInfo[]>) => {
   const { state } = await getChainBlocks({}, HASURA_HEADERS)
 
-  const chainsInfo: ApiChainInfo[] = []
+  const chainsInfo: ChainInfo[] = []
 
   for (const { chain, blocks } of state) {
     const chainInfo = chainById[chain]
