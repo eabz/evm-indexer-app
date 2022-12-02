@@ -1,20 +1,18 @@
 import request from 'graphql-request'
 
-import { IndexerBlock, IndexerChainInfo, IndexerTxHashChain, IndexerTxLog, IndexerTxReceipt } from '@/types'
+import { IndexerBlock, IndexerChainInfo, IndexerTokenTransfer, IndexerTransaction } from '@/types'
 
 import {
+  getAddressContractInteractionsQuery,
+  getAddressTokensQuery,
   getBlockQuery,
   getChainBlocksQuery,
   getChainsQuery,
   getChainTokensQuery,
-  getContractCreationsForAddressQuery,
-  getReceivedTransactionsForAddressQuery,
-  getSentTransactionsForAddressQuery,
-  getTokenFromAddressQuery,
+  getTokenFromAddressAndChainQuery,
   getTokensCountForChainQuery,
-  getTransactionLogsQuery,
+  getTransactionHistoryQuery,
   getTransactionQuery,
-  getTransactionsForBlockQuery,
 } from './queries'
 
 export const indexer_graph = async (query: string, variables = {}, headers = {}) =>
@@ -32,68 +30,48 @@ export const getTokensCountForChain = async (chain: string, variables = {}, head
   return await indexer_graph(getTokensCountForChainQuery(chain), variables, headers)
 }
 
-export const getChainTokens = async (chain: string, limit?: string, offset?: string, variables = {}, headers = {}) => {
+export const getTokenFromAddressAndChain = async (address: string, chain: string, variables = {}, headers = {}) => {
+  return await indexer_graph(getTokenFromAddressAndChainQuery(address, chain), variables, headers)
+}
+
+export const getChainTokens = async (chain: string, limit: number, offset: number, variables = {}, headers = {}) => {
   return await indexer_graph(getChainTokensQuery(chain, limit, offset), variables, headers)
-}
-
-export const getSentTransactionsForAddress = async (
-  address: string,
-  limit?: string,
-  offset?: string,
-  variables = {},
-  headers = {},
-) => {
-  return await indexer_graph(getSentTransactionsForAddressQuery(address, limit, offset), variables, headers)
-}
-
-export const getReceivedTransactionsForAddress = async (
-  address: string,
-  limit?: string,
-  offset?: string,
-  variables = {},
-  headers = {},
-) => {
-  return await indexer_graph(getReceivedTransactionsForAddressQuery(address, limit, offset), variables, headers)
-}
-
-export const getContractCreationsForAddress = async (
-  address: string,
-  limit?: string,
-  offset?: string,
-  variables = {},
-  headers = {},
-) => {
-  return await indexer_graph(getContractCreationsForAddressQuery(address, limit, offset), variables, headers)
-}
-
-export const getTokenFromAddress = async (address: string, variables = {}, headers = {}) => {
-  return await indexer_graph(getTokenFromAddressQuery(address), variables, headers)
 }
 
 export const getBlocks = async (number: number, variables = {}, headers = {}): Promise<{ blocks: IndexerBlock[] }> => {
   return await indexer_graph(getBlockQuery(number), variables, headers)
 }
 
-export const getTransactionForBlock = async (
-  number: number,
-  variables = {},
-  headers = {},
-): Promise<{ txs: IndexerTxHashChain[] }> => {
-  return await indexer_graph(getTransactionsForBlockQuery(number), variables, headers)
-}
-
 export const getTransaction = async (
   hash: string,
   variables = {},
   headers = {},
-): Promise<{ txs_receipts: IndexerTxReceipt[] }> => {
+): Promise<{ txs: IndexerTransaction[] }> => {
   return await indexer_graph(getTransactionQuery(hash), variables, headers)
 }
 
-export const getTransactionLogs = async (
-  hash: string,
+export const getTransactionHistory = async (
+  address: string,
+  limit: number,
+  offset: number,
   variables = {},
   headers = {},
-): Promise<{ logs: IndexerTxLog[] }> => {
-  return await indexer_graph(getTransactionLogsQuery(hash), variables, headers)
+): Promise<{ txs: IndexerTransaction[] }> => {
+  return await indexer_graph(getTransactionHistoryQuery(address, limit, offset), variables, headers)
+}
+
+export const getAddressUniqueTokens = async (
+  address: string,
+  variables = {},
+  headers = {},
+): Promise<{ token_transfers: IndexerTokenTransfer[] }> => {
+  return await indexer_graph(getAddressTokensQuery(address), variables, headers)
+}
+
+export const getAddressUniqueContractInteractions = async (
+  address: string,
+  variables = {},
+  headers = {},
+): Promise<{ contract_interactions: { contract: string }[] }> => {
+  return await indexer_graph(getAddressContractInteractionsQuery(address), variables, headers)
 }

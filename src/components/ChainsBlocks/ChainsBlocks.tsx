@@ -74,7 +74,7 @@ export const ChainsBlocks = () => {
   const [chainsInfo, setChainsInfo] = useState<ChainInfo[] | undefined>(undefined)
 
   const fetchData = useCallback(async () => {
-    const data = await fetch('/api/chains')
+    const data = await fetch('/api/chains/status')
     const chains = await data.json()
     setChainsInfo(chains)
     setLoading(false)

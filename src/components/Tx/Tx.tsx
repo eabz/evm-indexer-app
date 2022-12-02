@@ -1,6 +1,6 @@
 import { Box, Stack } from '@chakra-ui/layout'
 
-import { Tx as TxInfo } from '@/types/models/Tx'
+import { Tx as TxInfo } from '@/types/models/Transaction'
 
 export const Tx = ({ txInfo }: { txInfo: TxInfo }) => {
   return (

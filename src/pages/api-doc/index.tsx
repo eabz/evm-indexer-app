@@ -25,10 +25,6 @@ export const getStaticProps: GetStaticProps = async () => {
     schemaFolders: ['src/types/models'],
     definition: {
       openapi: '3.0.0',
-      info: {
-        title: 'EVM Indexer API docs',
-        version: '1.0',
-      },
     },
   })
 

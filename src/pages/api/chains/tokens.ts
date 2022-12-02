@@ -6,9 +6,9 @@ import { ChainTokens } from '@/types/models/ChainTokens'
 
 /**
  * @swagger
- * /api/tokens:
+ * /api/chains/tokens:
  *   get:
- *     tags: [Chain Tokens]
+ *     tags: [All Chains Information]
  *     responses:
  *       200:
  *         description: An array with all the chains being indexed and the count of tokens

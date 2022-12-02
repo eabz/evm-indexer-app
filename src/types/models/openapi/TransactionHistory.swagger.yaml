@@ -1,0 +1,111 @@
+openapi: 3.0.0
+info:
+  title: Converted from TransactionHistory.swagger.yaml with typeconv
+  version: '1'
+  x-id: TransactionHistory.swagger.yaml
+  x-comment: >-
+    Generated from src/types/models/TransactionHistory.ts by
+    core-types-json-schema (https://github.com/grantila/core-types-json-schema)
+    on behalf of typeconv (https://github.com/grantila/typeconv)
+paths: {}
+components:
+  schemas:
+    TransactionHistory:
+      properties:
+        block_number:
+          title: TransactionHistory.block_number
+          type: number
+        chain:
+          title: TransactionHistory.chain
+          type: string
+        timestamp:
+          title: TransactionHistory.timestamp
+          type: string
+        from_address:
+          title: TransactionHistory.from_address
+          type: string
+        gas_price:
+          title: TransactionHistory.gas_price
+          type: string
+        gas_used:
+          title: TransactionHistory.gas_used
+          type: string
+        hash:
+          title: TransactionHistory.hash
+          type: string
+        input:
+          title: TransactionHistory.input
+          type: string
+        max_fee_per_gas:
+          title: TransactionHistory.max_fee_per_gas
+          type: string
+        max_priority_fee_per_gas:
+          title: TransactionHistory.max_priority_fee_per_gas
+          type: string
+        to_address:
+          title: TransactionHistory.to_address
+          type: string
+        transaction_index:
+          title: TransactionHistory.transaction_index
+          type: number
+        transaction_type:
+          title: TransactionHistory.transaction_type
+          type: number
+        value:
+          title: TransactionHistory.value
+          type: string
+        token_tranfers:
+          items:
+            properties:
+              from_address:
+                title: TransactionHistory.token_tranfers.[].from_address
+                type: string
+              to_address:
+                title: TransactionHistory.token_tranfers.[].to_address
+                type: string
+              log_index:
+                title: TransactionHistory.token_tranfers.[].log_index
+                type: number
+              token:
+                title: TransactionHistory.token_tranfers.[].token
+                type: string
+              value:
+                title: TransactionHistory.token_tranfers.[].value
+                type: string
+            required:
+              - from_address
+              - to_address
+              - log_index
+              - token
+              - value
+            additionalProperties: false
+            title: TransactionHistory.token_tranfers.[]
+            type: object
+          title: TransactionHistory.token_tranfers
+          type: array
+        success:
+          title: TransactionHistory.success
+          type: boolean
+        contract_interacted:
+          title: TransactionHistory.contract_interacted
+          type: string
+      required:
+        - block_number
+        - chain
+        - timestamp
+        - from_address
+        - gas_price
+        - gas_used
+        - hash
+        - input
+        - max_fee_per_gas
+        - max_priority_fee_per_gas
+        - to_address
+        - transaction_index
+        - transaction_type
+        - value
+        - token_tranfers
+        - success
+      additionalProperties: false
+      title: TransactionHistory
+      type: object

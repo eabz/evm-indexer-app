@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
-import { getBlocks, getTransactionForBlock } from '@/graph/fetcher'
+import { getBlocks } from '@/graph/fetcher'
 import { HASURA_HEADERS } from '@/graph/utils'
 import { Block } from '@/types/models/Block'
 
@@ -8,7 +8,7 @@ import { Block } from '@/types/models/Block'
  * @swagger
  * /api/block/{number}:
  *   get:
- *     tags: [Blocks]
+ *     tags: [Blockchain Data]
  *     parameters:
  *     - in: path
  *       name: number
@@ -37,13 +37,10 @@ export default async function async(req: NextApiRequest, res: NextApiResponse<Bl
 }
 
 export const getApiBlock = async (number: number): Promise<Block[]> => {
-  const [{ blocks }, { txs }] = await Promise.all([
-    getBlocks(number, {}, HASURA_HEADERS),
-    getTransactionForBlock(number, {}, HASURA_HEADERS),
-  ])
+  const [{ blocks }] = await Promise.all([getBlocks(number, {}, HASURA_HEADERS)])
 
   return blocks.map((block) => ({
     ...block,
-    txs_hash: txs.filter((tx) => tx.chain === block.chain).map((tx) => tx.hash),
+    txs_hash: block.txs_hash.map((tx) => tx.hash),
   }))
 }

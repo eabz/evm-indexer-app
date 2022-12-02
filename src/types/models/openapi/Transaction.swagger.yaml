@@ -1,0 +1,151 @@
+openapi: 3.0.0
+info:
+  title: Converted from Transaction.swagger.yaml with typeconv
+  version: '1'
+  x-id: Transaction.swagger.yaml
+  x-comment: >-
+    Generated from src/types/models/Transaction.ts by core-types-json-schema
+    (https://github.com/grantila/core-types-json-schema) on behalf of typeconv
+    (https://github.com/grantila/typeconv)
+paths: {}
+components:
+  schemas:
+    Transaction:
+      properties:
+        block_number:
+          title: Transaction.block_number
+          type: number
+        chain:
+          title: Transaction.chain
+          type: string
+        timestamp:
+          title: Transaction.timestamp
+          type: string
+        from_address:
+          title: Transaction.from_address
+          type: string
+        gas_price:
+          title: Transaction.gas_price
+          type: string
+        gas_used:
+          title: Transaction.gas_used
+          type: string
+        hash:
+          title: Transaction.hash
+          type: string
+        input:
+          title: Transaction.input
+          type: string
+        max_fee_per_gas:
+          title: Transaction.max_fee_per_gas
+          type: string
+        max_priority_fee_per_gas:
+          title: Transaction.max_priority_fee_per_gas
+          type: string
+        to_address:
+          title: Transaction.to_address
+          type: string
+        transaction_index:
+          title: Transaction.transaction_index
+          type: number
+        transaction_type:
+          title: Transaction.transaction_type
+          type: number
+        value:
+          title: Transaction.value
+          type: string
+        token_tranfers:
+          items:
+            properties:
+              from_address:
+                title: Transaction.token_tranfers.[].from_address
+                type: string
+              to_address:
+                title: Transaction.token_tranfers.[].to_address
+                type: string
+              log_index:
+                title: Transaction.token_tranfers.[].log_index
+                type: number
+              token:
+                title: Transaction.token_tranfers.[].token
+                type: string
+              value:
+                title: Transaction.token_tranfers.[].value
+                type: string
+            required:
+              - from_address
+              - to_address
+              - log_index
+              - token
+              - value
+            additionalProperties: false
+            title: Transaction.token_tranfers.[]
+            type: object
+          title: Transaction.token_tranfers
+          type: array
+        success:
+          title: Transaction.success
+          type: boolean
+        logs:
+          items:
+            properties:
+              address:
+                title: Transaction.logs.[].address
+                type: string
+              data:
+                title: Transaction.logs.[].data
+                type: string
+              log_index:
+                title: Transaction.logs.[].log_index
+                type: number
+              log_type:
+                title: Transaction.logs.[].log_type
+                type: string
+              topics:
+                items:
+                  title: Transaction.logs.[].topics.[]
+                  type: string
+                title: Transaction.logs.[].topics
+                type: array
+              transaction_log_index:
+                title: Transaction.logs.[].transaction_log_index
+                type: number
+            required:
+              - address
+              - data
+              - log_index
+              - log_type
+              - topics
+              - transaction_log_index
+            additionalProperties: false
+            title: Transaction.logs.[]
+            type: object
+          title: Transaction.logs
+          type: array
+        contract_interacted:
+          title: Transaction.contract_interacted
+          type: string
+        contract_created:
+          title: Transaction.contract_created
+          type: string
+      required:
+        - block_number
+        - chain
+        - timestamp
+        - from_address
+        - gas_price
+        - gas_used
+        - hash
+        - input
+        - max_fee_per_gas
+        - max_priority_fee_per_gas
+        - to_address
+        - transaction_index
+        - transaction_type
+        - value
+        - token_tranfers
+        - success
+        - logs
+      additionalProperties: false
+      title: Transaction
+      type: object

@@ -3,7 +3,7 @@ import { GetServerSidePropsContext } from 'next'
 
 import { PageLayout } from '@/components/PageLayout'
 import { Tx } from '@/components/Tx'
-import { Tx as TxInfo } from '@/types/models/Tx'
+import { Tx as TxInfo } from '@/types/models/Transaction'
 
 import { getApiTransaction } from '../api/tx/[hash]'
 

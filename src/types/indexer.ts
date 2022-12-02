@@ -11,6 +11,11 @@ export interface IndexerToken {
   symbol: string
 }
 
+export interface IndexerTokenTransfer {
+  token: string
+  token_details: IndexerToken
+}
+
 export interface IndexerBlock {
   base_fee_per_gas: string
   chain: string
@@ -25,25 +30,20 @@ export interface IndexerBlock {
   timestamp: string
   total_difficulty: string
   txs: number
+  txs_hash: [{ hash: string }]
 }
 
-export interface IndexerTxHashChain {
-  chain: string
-  hash: string
-}
-
-export interface IndexerTxReceipt {
-  success: boolean
-  chain: string
-  hash: string
-  tx: IndexerTx
-}
-
-export interface IndexerTx {
+export interface IndexerTransaction {
   block_number: number
+  chain: string
+  block: {
+    timestamp: string
+  }
   from_address: string
   gas_price: string
   gas_used: string
+  hash: string
+  timestamp: string
   input: string
   max_fee_per_gas: string
   max_priority_fee_per_gas: string
@@ -51,19 +51,32 @@ export interface IndexerTx {
   transaction_index: number
   transaction_type: number
   value: string
-  block: {
-    timestamp: string
+  token_transfers_aggregate: {
+    nodes: {
+      from_address: string
+      to_address: string
+      log_index: number
+      token: string
+      value: string
+    }[]
   }
-}
-
-export interface IndexerTxLog {
-  address: string
-  chain: string
-  data: string
-  hash: string
-  log_index: number
-  log_type: string
-  topics: string[]
-  transaction_log_index: number
-  tx: { block: { timestamp: string } }
+  receipt: {
+    success: boolean
+  }
+  logs_aggregate: {
+    nodes: {
+      address: string
+      data: string
+      log_index: number
+      log_type: string
+      topics: string[]
+      transaction_log_index: number
+    }[]
+  }
+  contract_interaction: {
+    contract: string
+  }
+  contract_creation: {
+    contract: string
+  }
 }

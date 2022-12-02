@@ -19,7 +19,7 @@ export const getChainsQuery = (): string => gql`
 
 export const getTokensCountForChainQuery = (chain: string): string => gql`
   query getTokensCountForChain {
-    tokens_aggregate(where: { chain: { _eq: ${chain}} }) {
+    tokens_aggregate(where: { chain: { _eq: "${chain}"} }) {
       aggregate {
         count
       }
@@ -27,7 +27,7 @@ export const getTokensCountForChainQuery = (chain: string): string => gql`
   }
 `
 
-export const getChainTokensQuery = (chain: string, limit = '500', offset = '0'): string => gql`
+export const getChainTokensQuery = (chain: string, limit: number, offset: number): string => gql`
   query getChainTokens {
     tokens(where: { chain: { _eq: "${chain}" } }, limit: ${limit}, offset: ${offset}, order_by: {name: asc}) {
       address
@@ -39,98 +39,10 @@ export const getChainTokensQuery = (chain: string, limit = '500', offset = '0'):
   }
 `
 
-export const getSentTransactionsForAddressQuery = (address: string, limit = '500', offset = '0'): string => gql`
-  query getSentTransactionsForAddress {
-    txs(where: {from_address: {_eq: "${address}"}}, limit: ${limit}, offset:  ${offset}, order_by: {block: {timestamp: asc}}) {
-      max_fee_per_gas
-      max_priority_fee_per_gas
-      transaction_type
-      block_number
-      chain
-      from_address
-      gas_price
-      gas_used
-      hash
-      to_address
-      transaction_index
-      value
-      block {
-        timestamp
-      }
-    }
-  }
-`
-
-export const getReceivedTransactionsForAddressQuery = (address: string, limit = '500', offset = '0'): string => gql`
-  query getReceivedTransactionsForAddress {
-    txs(where: {to_address: {_eq: "${address}"}}, limit: ${limit}, offset:  ${offset}, order_by: {block: {timestamp: asc}}) {
-      max_fee_per_gas
-      max_priority_fee_per_gas
-      transaction_type
-      block_number
-      chain
-      from_address
-      gas_price
-      gas_used
-      hash
-      to_address
-      transaction_index
-      value
-      block {
-        timestamp
-      }
-    }
-  }
-`
-
-export const getContractCreationsForAddressQuery = (address: string, limit = '500', offset = '0'): string => gql`
-  query getContractCreationsForAddress {
-    contract_creations(where: {tx: {from_address: {_eq: "${address}"}}}, limit: ${limit}, offset: ${offset}, order_by: {tx: {block: {timestamp: asc}}}) {
-      chain
-      contract
-      block
-      hash
-      tx {
-        gas_price
-        gas_used
-        max_fee_per_gas
-        max_priority_fee_per_gas
-        input
-        block {
-          timestamp
-        }
-      }
-    }
-  }
-`
-
-export const getContractInteractionsForAddressQuery = (address: string, limit = '500', offset = '0'): string => gql`
-  query getContractInteractionsForAddress {
-    contract_interactions(where: { tx: { from_address: { _eq: "${address}" } } }, limit: ${limit}, offset: ${offset}, order_by: {tx: {block: {timestamp: asc}}}) {
-      block
-      chain
-      contract
-      tx {
-        gas_price
-        gas_used
-        max_fee_per_gas
-        max_priority_fee_per_gas
-        to_address
-        transaction_index
-        transaction_type
-        value
-        block {
-          timestamp
-        }
-      }
-      hash
-    }
-  }
-`
-
-export const getTokenFromAddressQuery = (address: string): string => gql`
-  query getTokenFromAddress {
-    tokens(where: { address: { _eq: "${address}" } }) {
+export const getTokenFromAddressAndChainQuery = (address: string, chain: string): string => gql`
+  query getTokenFromAddressAndChain {
+    tokens(where: { address: { _eq: "${address}" }, chain: { _eq: "${chain}" } }) {
+      address
       chain
       decimals
       name
@@ -155,61 +67,122 @@ export const getBlockQuery = (number: number): string => gql`
       timestamp
       total_difficulty
       txs
-    }
-  }
-`
-
-export const getTransactionsForBlockQuery = (block: number): string => gql`
-  query getTransactionsForBlock {
-    txs(where: { block_number: { _eq: ${block} }}) {
-      hash
-      chain
+      txs_hash {
+        hash 
+      }
     }
   }
 `
 
 export const getTransactionQuery = (hash: string): string => gql`
   query getTransaction {
-    txs_receipts(where: { tx: { hash: { _eq: "${hash}" } } }) {
-      success
+    txs(where: { hash: { _eq: "${hash}" } }) {
+      block_number
       chain
+      timestamp
+      from_address
+      gas_price
+      gas_used
       hash
-      tx {
-        block_number
-        from_address
-        gas_price
-        gas_used
-        input
-        max_fee_per_gas
-        max_priority_fee_per_gas
-        to_address
-        transaction_index
-        transaction_type
-        value
-        block {
-          timestamp
+      input
+      max_fee_per_gas
+      max_priority_fee_per_gas
+      to_address
+      transaction_index
+      transaction_type
+      value
+      token_transfers_aggregate(order_by: {log_index: asc}) {
+        nodes {
+          from_address
+          to_address
+          log_index
+          token
+          value
         }
+      }
+      receipt {
+        success
+      }
+      logs_aggregate(order_by: {log_index: asc}) {
+        nodes {
+          address
+          data
+          log_index
+          log_type
+          topics
+          transaction_log_index
+        }
+      }
+      contract_interaction {
+        contract
       }
     }
   }
 `
 
-export const getTransactionLogsQuery = (hash: string): string => gql`
-  query getTransactionLogs {
-    logs(where: { tx: { hash: { _eq: "${hash}" } } }) {
-      address
+export const getTransactionHistoryQuery = (address: string, limit: number, offset: number): string => gql`
+  query getTransactionHistory {
+    txs(
+      where: {
+        _or: [
+          { from_address: { _eq: "${address}" } }
+          { to_address: { _eq: "${address}" } }
+        ]
+      }
+      limit: ${limit}
+      offset: ${offset}
+      order_by: { timestamp: desc }
+    ) {
+      block_number
       chain
-      data
+      timestamp
+      from_address
+      gas_price
+      gas_used
       hash
-      log_index
-      log_type
-      topics
-      transaction_log_index
-      tx {
-        block {
-          timestamp
+      max_fee_per_gas
+      max_priority_fee_per_gas
+      to_address
+      transaction_index
+      transaction_type
+      value
+      token_transfers_aggregate(order_by: { log_index: asc }) {
+        nodes {
+          from_address
+          to_address
+          log_index
+          token
+          value
         }
       }
+      receipt {
+        success
+      }
+      contract_interaction {
+        contract
+      }
+    }
+  }
+`
+
+export const getAddressTokensQuery = (address: string): string => gql`
+query getAddressTokensQuery {
+  token_transfers(where: {_or: [{from_address: {_eq: "${address}"}}, {to_address: {_eq: "${address}"}}]}, distinct_on: token) {
+     token
+      token_details {
+        chain
+        decimals
+        name
+        symbol
+      }
+  }
+}
+`
+
+export const getAddressContractInteractionsQuery = (address: string): string => gql`
+  query getAddressContractInteractions {
+    contract_interactions(where: {address: {_eq: "${address}"}}, distinct_on: contract) {
+      contract
     }
   }
 `

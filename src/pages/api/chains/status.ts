@@ -8,9 +8,9 @@ import { ChainInfo } from '@/types/models/ChainInfo'
 
 /**
  * @swagger
- * /api/chains:
+ * /api/chains/status:
  *   get:
- *     tags: [Chain Information]
+ *     tags: [All Chains Information]
  *     responses:
  *       200:
  *         description: An array with all the chains being indexed and their sync status
