@@ -3,11 +3,11 @@ import { GetServerSidePropsContext } from 'next'
 
 import { PageLayout } from '@/components/PageLayout'
 import { Tx } from '@/components/Tx'
-import { Tx as TxInfo } from '@/types/models/Transaction'
+import { Transaction } from '@/types/models/Transaction'
 
 import { getApiTransaction } from '../api/tx/[hash]'
 
-export default function TxPage({ txInfo }: { txInfo: TxInfo[] }) {
+export default function TxPage({ txInfo }: { txInfo: Transaction[] }) {
   return (
     <PageLayout>
       <VStack>

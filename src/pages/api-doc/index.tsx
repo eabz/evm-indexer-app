@@ -13,7 +13,7 @@ const SwaggerUI = dynamic<{
 
 function ApiDoc({ spec }: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
-    <PageLayout>
+    <PageLayout isHome={false}>
       <SwaggerUI spec={spec} />
     </PageLayout>
   )

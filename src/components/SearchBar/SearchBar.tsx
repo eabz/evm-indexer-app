@@ -1,8 +1,7 @@
 import { FormControl, FormErrorMessage } from '@chakra-ui/form-control'
 import { Input } from '@chakra-ui/input'
-import { Box, Center, Text, VStack } from '@chakra-ui/layout'
+import { Box, Center, VStack } from '@chakra-ui/layout'
 import { isHexString, toUtf8Bytes } from 'ethers/lib/utils'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { ChangeEvent, useState } from 'react'
 
@@ -85,13 +84,6 @@ export const SearchBar = () => {
             />
           </Box>
           <Box>{isError && <FormErrorMessage>{errorMessage}</FormErrorMessage>}</Box>
-          <Box>
-            <Link href={'/api-doc'}>
-              <Text color="blue.700" cursor="pointer" textDecoration="underline">
-                API documentation
-              </Text>
-            </Link>
-          </Box>
         </VStack>
       </Center>
     </FormControl>
