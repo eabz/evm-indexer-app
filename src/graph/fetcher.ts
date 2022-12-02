@@ -31,7 +31,7 @@ export const getTokensCountForChain = async (chain: string, variables = {}, head
 }
 
 export const getTokenFromAddressAndChain = async (address: string, chain: string, variables = {}, headers = {}) => {
-  return await indexer_graph(getTokenFromAddressAndChainQuery(address, chain), variables, headers)
+  return await indexer_graph(getTokenFromAddressAndChainQuery(address.toLowerCase(), chain), variables, headers)
 }
 
 export const getChainTokens = async (chain: string, limit: number, offset: number, variables = {}, headers = {}) => {
@@ -57,7 +57,7 @@ export const getTransactionHistory = async (
   variables = {},
   headers = {},
 ): Promise<{ txs: IndexerTransaction[] }> => {
-  return await indexer_graph(getTransactionHistoryQuery(address, limit, offset), variables, headers)
+  return await indexer_graph(getTransactionHistoryQuery(address.toLowerCase(), limit, offset), variables, headers)
 }
 
 export const getAddressUniqueTokens = async (
@@ -65,7 +65,7 @@ export const getAddressUniqueTokens = async (
   variables = {},
   headers = {},
 ): Promise<{ token_transfers: IndexerTokenTransfer[] }> => {
-  return await indexer_graph(getAddressTokensQuery(address), variables, headers)
+  return await indexer_graph(getAddressTokensQuery(address.toLowerCase()), variables, headers)
 }
 
 export const getAddressUniqueContractInteractions = async (
@@ -73,5 +73,5 @@ export const getAddressUniqueContractInteractions = async (
   variables = {},
   headers = {},
 ): Promise<{ contract_interactions: { contract: string }[] }> => {
-  return await indexer_graph(getAddressContractInteractionsQuery(address), variables, headers)
+  return await indexer_graph(getAddressContractInteractionsQuery(address.toLowerCase()), variables, headers)
 }

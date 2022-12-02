@@ -58,7 +58,7 @@ export default async function async(req: NextApiRequest, res: NextApiResponse) {
 
 /**
  * @swagger
- * /api/{address}/history:
+ * /api/address/{address}/history:
  *   get:
  *     tags: [Address Information]
  *     parameters:
@@ -92,10 +92,10 @@ export default async function async(req: NextApiRequest, res: NextApiResponse) {
  *                 $ref: '#/components/schemas/Transaction'
  */
 async function getAddressHistory(address: string, limit: string, page: string): Promise<TransactionHistory[]> {
-  let limitNumber = limit ? parseInt(limit) : 1000
+  let limitNumber = limit ? parseInt(limit) : 100
 
-  if (limitNumber > 1000) {
-    limitNumber = 1000
+  if (limitNumber > 100) {
+    limitNumber = 100
   }
 
   const offset = page && page !== '0' ? ((parseInt(page) - 1) * limitNumber).toFixed(0) : undefined
@@ -127,7 +127,7 @@ async function getAddressHistory(address: string, limit: string, page: string): 
 
 /**
  * @swagger
- * /api/{address}/tokens:
+ * /api/address/{address}/tokens:
  *   get:
  *     tags: [Address Information]
  *     parameters:
@@ -150,7 +150,7 @@ async function getAddressHistory(address: string, limit: string, page: string): 
  */
 async function getAddressTokens(address: string): Promise<Token[]> {
   const { token_transfers } = await getAddressUniqueTokens(address, {}, HASURA_HEADERS)
-  console.log(token_transfers)
+
   return token_transfers.map((token) => ({
     address: token.token,
     chain: token.token_details.chain,
@@ -162,7 +162,7 @@ async function getAddressTokens(address: string): Promise<Token[]> {
 
 /**
  * @swagger
- * /api/{address}/interactions:
+ * /api/address/{address}/interactions:
  *   get:
  *     tags: [Address Information]
  *     parameters:
