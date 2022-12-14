@@ -60,7 +60,7 @@ export const chains: IChainInfo[] = [
   {
     id: 'arbitrum',
     chainId: 42161,
-    name: 'Avalanche',
+    name: 'Arbitrum',
     logoUrl: 'arbitrum-logo.svg',
     rpcUrl: 'https://arb1.arbitrum.io/rpc',
   },
