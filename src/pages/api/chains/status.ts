@@ -6,23 +6,6 @@ import { HASURA_HEADERS } from '@/graph/utils'
 import { chainById } from '@/lib/chains'
 import { ChainInfo } from '@/types/models/ChainInfo'
 
-/**
- * @swagger
- * /api/chains/status:
- *   get:
- *     tags: [All Chains Information]
- *     responses:
- *       200:
- *         description: An array with all the chains being indexed and their sync status
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 type: object
- *                 $ref: '#/components/schemas/ChainInfo'
- */
-
 const handler = async (_req: NextApiRequest, res: NextApiResponse<ChainInfo[]>) => {
   const { state } = await getChainBlocks({}, HASURA_HEADERS)
 
