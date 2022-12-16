@@ -64,6 +64,13 @@ export const chains: IChainInfo[] = [
     logoUrl: 'arbitrum-logo.svg',
     rpcUrl: 'https://arb1.arbitrum.io/rpc',
   },
+  {
+    id: 'dogechain',
+    chainId: 2000,
+    name: 'Doge Chain',
+    logoUrl: 'dogechain-logo.png',
+    rpcUrl: 'https://dogechain.ankr.com',
+  },
 ]
 
 export const chainById: { [key: string]: IChainInfo } = {}
