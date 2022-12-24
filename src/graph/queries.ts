@@ -1,10 +1,11 @@
 import { gql } from 'graphql-request'
 
-export const getChainBlocksQuery = (): string => gql`
+export const getChainBlocksQuery = (chain: string): string => gql`
   query getChainBlocks {
-    state(order_by: { chain: asc }) {
-      blocks
-      chain
+    blocks_aggregate(where: { chain: { _eq: "${chain}" } }) {
+      aggregate {
+        count
+      }
     }
   }
 `

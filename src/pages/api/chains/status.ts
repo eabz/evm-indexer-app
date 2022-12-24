@@ -3,23 +3,28 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 import { getChainBlocks } from '@/graph/fetcher'
 import { HASURA_HEADERS } from '@/graph/utils'
-import { chainById } from '@/lib/chains'
+import { chainById, chains } from '@/lib/chains'
 import { ChainInfo } from '@/types/models/ChainInfo'
 
 const handler = async (_req: NextApiRequest, res: NextApiResponse<ChainInfo[]>) => {
-  const { state } = await getChainBlocks({}, HASURA_HEADERS)
-
   const chainsInfo: ChainInfo[] = []
 
-  for (const { chain, blocks } of state) {
-    const chainInfo = chainById[chain]
-    if (!chainInfo) continue
+  const chainsReq = chains.map((chain) => getChainBlocks(chain.id, {}, HASURA_HEADERS))
 
-    const provider = new ethers.providers.JsonRpcProvider(chainInfo.rpcUrl, chainInfo.chainId)
+  const responses = await Promise.all(chainsReq)
+
+  for (const { chain, blocks_aggregate } of responses) {
+    const chainData = chainById[chain]
+
+    const provider = new ethers.providers.JsonRpcProvider(chainData.rpcUrl, chainData.chainId)
 
     const lastBlock = await provider.getBlockNumber()
 
-    chainsInfo.push({ chain, indexed_block: blocks, last_block: lastBlock })
+    chainsInfo.push({
+      chain: chainData.id,
+      indexed_block: blocks_aggregate.aggregate.count,
+      last_block: lastBlock,
+    })
   }
 
   res.json(chainsInfo)
