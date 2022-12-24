@@ -7,9 +7,6 @@ export const PageLayout = ({ children }: { children: JSX.Element }) => {
       <Text fontSize="2xl" fontWeight="bold" marginTop="10" textAlign="center">
         <Link href="/">EVM Indexer</Link>
       </Text>
-      <Text fontSize="md" fontWeight="regular" padding="2" textAlign="center">
-        Minimalistic EVM compatible chain indexer
-      </Text>
 
       <Box width="full">{children}</Box>
     </VStack>
